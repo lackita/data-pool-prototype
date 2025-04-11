@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="{{ "/assets/js/scripts.js" | relative_url }}" defer></script>
+  {%- feed_meta -%}
+</head>
+
+<body class="bg-gray-50 flex flex-col h-screen">
+  <!-- Header -->
+  <header class="site-header">
+    <div class="wrapper">
+      <div>
+        <a class="site-title" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+        <p class="text-white opacity-80 text-sm">Easily unite all your third party data and build agents</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#" class="button secondary">Upgrade</a>
+        <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+          <span class="font-bold text-blue-700">JP</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tab-container">
+    <div class="tabs wrapper">
+      <a href="{{ "/workflows" | relative_url }}" class="tab {% if page.tab == 'workflows' %}active{% endif %}">
+        <i class="fas fa-th-large mr-2"></i> Workflows
+      </a>
+      <a href="{{ "/reports" | relative_url }}" class="tab {% if page.tab == 'reports' %}active{% endif %}">
+        <i class="fas fa-chart-line mr-2"></i> Reports
+      </a>
+      <a href="{{ "/connections" | relative_url }}" class="tab {% if page.tab == 'connections' %}active{% endif %}">
+        <i class="fas fa-link mr-2"></i> Connections
+      </a>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main class="page-content flex-1 overflow-auto" aria-label="Content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrapper">
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <p>{{ site.description | escape }}</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
