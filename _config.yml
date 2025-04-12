@@ -23,8 +23,8 @@ email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   Data Pool - Easily unite all your third party data and build agents.
   A platform for connecting data sources and creating automated workflows.
-baseurl: "/data-pool" # the subpath of your site, e.g. /blog
-url: "" # will be filled with your GitHub Pages URL
+baseurl: "/data-pool-prototype" # the subpath of your site, e.g. /blog
+url: "https://lackita.github.io" # your GitHub Pages URL
 github_username: lackita
 
 # Build settings
