@@ -159,6 +159,61 @@ tab: chatbot
     padding-top: 0.75rem;
   }
   
+  /* Tab headers */
+  .prompt-tab-headers {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 0.75rem;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .prompt-tab-headers::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  
+  .prompt-tab-header {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 0.875rem;
+    color: #6b7280;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  
+  .prompt-tab-header:hover {
+    color: #1a62c0;
+  }
+  
+  .prompt-tab-header.active {
+    color: #1a62c0;
+    border-bottom: 2px solid #1a62c0;
+    font-weight: 600;
+  }
+  
+  /* Tab content */
+  .prompt-tab-content {
+    position: relative;
+  }
+  
+  .prompt-tab-pane {
+    display: none;
+  }
+  
+  .prompt-tab-pane.active {
+    display: block;
+    animation: fadeIn 0.3s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Prompt buttons */
   .prompt-buttons {
     display: flex;
     flex-direction: column;
@@ -201,11 +256,41 @@ tab: chatbot
         <p>You can ask me to run workflows, analyze data, or answer questions about your connected services.</p>
         <div class="suggested-prompts">
           <p>Here are some things you can ask me:</p>
-          <div class="prompt-buttons">
-            <button class="prompt-button" onclick="sendSuggestedPrompt('What features are my customers requesting the most?')">What features are my customers requesting the most?</button>
-            <button class="prompt-button" onclick="sendSuggestedPrompt('What are the top sales objections we\'re facing?')">What are the top sales objections we're facing?</button>
-            <button class="prompt-button" onclick="sendSuggestedPrompt('Create an implementation plan for our new customer')">Create an implementation plan for our new customer</button>
-            <button class="prompt-button" onclick="sendSuggestedPrompt('Show me which engineers contributed to our top features')">Show me which engineers contributed to our top features</button>
+          <div class="prompt-tabs">
+            <div class="prompt-tab-headers">
+              <button class="prompt-tab-header active" data-tab="product">Product</button>
+              <button class="prompt-tab-header" data-tab="sales">Sales</button>
+              <button class="prompt-tab-header" data-tab="cs">Customer Success</button>
+              <button class="prompt-tab-header" data-tab="engineering">Engineering</button>
+            </div>
+            <div class="prompt-tab-content">
+              <div class="prompt-tab-pane active" id="product-tab">
+                <div class="prompt-buttons">
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('What features are my customers requesting the most?')">What features are my customers requesting the most?</button>
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('Generate product documentation for our top requested features')">Generate product documentation for our top requested features</button>
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('Notify customers about the new features we just released')">Notify customers about the new features we just released</button>
+                </div>
+              </div>
+              <div class="prompt-tab-pane" id="sales-tab">
+                <div class="prompt-buttons">
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('What are the top sales objections we\'re facing?')">What are the top sales objections we're facing?</button>
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('What\'s the best way to run a sales process to ensure a second meeting?')">What's the best way to run a sales process to ensure a second meeting?</button>
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('What features resonate most with our existing customers?')">What features resonate most with our existing customers?</button>
+                </div>
+              </div>
+              <div class="prompt-tab-pane" id="cs-tab">
+                <div class="prompt-buttons">
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('Create an implementation plan for our new customer')">Create an implementation plan for our new customer</button>
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('Develop an account management process for customer success')">Develop an account management process for customer success</button>
+                </div>
+              </div>
+              <div class="prompt-tab-pane" id="engineering-tab">
+                <div class="prompt-buttons">
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('Show me which engineers contributed to our top features')">Show me which engineers contributed to our top features</button>
+                  <button class="prompt-button" onclick="sendSuggestedPrompt('Highlight recent engineering achievements mentioned by customers')">Highlight recent engineering achievements mentioned by customers</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -223,6 +308,30 @@ tab: chatbot
     const chatMessages = document.getElementById('chat-messages');
     const chatInputField = document.getElementById('chat-input-field');
     const chatSubmitButton = document.getElementById('chat-submit-button');
+    
+    // Setup tab switching
+    const tabHeaders = document.querySelectorAll('.prompt-tab-header');
+    
+    tabHeaders.forEach(header => {
+      header.addEventListener('click', function() {
+        // Remove active class from all tabs
+        tabHeaders.forEach(h => h.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        // Hide all tab panes
+        const tabPanes = document.querySelectorAll('.prompt-tab-pane');
+        tabPanes.forEach(pane => pane.classList.remove('active'));
+        
+        // Show the selected tab pane
+        const tabName = this.getAttribute('data-tab');
+        const activePane = document.getElementById(tabName + '-tab');
+        if (activePane) {
+          activePane.classList.add('active');
+        }
+      });
+    });
     
     // Function to handle suggested prompts
     window.sendSuggestedPrompt = function(text) {
