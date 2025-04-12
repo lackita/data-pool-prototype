@@ -151,6 +151,40 @@ tab: chatbot
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
   }
+  
+  /* Suggested prompts */
+  .suggested-prompts {
+    margin-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 0.75rem;
+  }
+  
+  .prompt-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .prompt-button {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    font-size: 0.875rem;
+    color: #1a62c0;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .prompt-button:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+  }
 </style>
 
 <div class="chat-container">
@@ -165,6 +199,15 @@ tab: chatbot
       <div class="message-content">
         <p>Hello! I'm your Data Pool Assistant. How can I help you today?</p>
         <p>You can ask me to run workflows, analyze data, or answer questions about your connected services.</p>
+        <div class="suggested-prompts">
+          <p>Here are some things you can ask me:</p>
+          <div class="prompt-buttons">
+            <button class="prompt-button" onclick="sendSuggestedPrompt('What features are my customers requesting the most?')">What features are my customers requesting the most?</button>
+            <button class="prompt-button" onclick="sendSuggestedPrompt('What are the top sales objections we\'re facing?')">What are the top sales objections we're facing?</button>
+            <button class="prompt-button" onclick="sendSuggestedPrompt('Create an implementation plan for our new customer')">Create an implementation plan for our new customer</button>
+            <button class="prompt-button" onclick="sendSuggestedPrompt('Show me which engineers contributed to our top features')">Show me which engineers contributed to our top features</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -180,6 +223,26 @@ tab: chatbot
     const chatMessages = document.getElementById('chat-messages');
     const chatInputField = document.getElementById('chat-input-field');
     const chatSubmitButton = document.getElementById('chat-submit-button');
+    
+    // Function to handle suggested prompts
+    window.sendSuggestedPrompt = function(text) {
+      // Set the input field with the suggested prompt
+      chatInputField.value = text;
+      
+      // Send the message
+      sendMessage();
+      
+      // Remove the suggested prompts after selection
+      removeSuggestedPrompts();
+    }
+    
+    // Function to remove suggested prompts
+    function removeSuggestedPrompts() {
+      const suggestedPromptsElements = document.querySelectorAll('.suggested-prompts');
+      suggestedPromptsElements.forEach(element => {
+        element.remove();
+      });
+    }
     
     // Lorem ipsum paragraphs for random responses
     const loremIpsumResponses = [
@@ -269,6 +332,9 @@ tab: chatbot
       const text = chatInputField.value.trim();
       
       if (text) {
+        // Remove suggested prompts if they exist
+        removeSuggestedPrompts();
+        
         // Add user message
         addUserMessage(text);
         
